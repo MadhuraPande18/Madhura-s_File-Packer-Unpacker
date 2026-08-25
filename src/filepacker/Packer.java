@@ -6,7 +6,7 @@
 import java.io.*;
 import java.util.*;
 
-public class FilePacker
+public class Packer
 {
     public static void main(String A[]) throws Exception
     {     
