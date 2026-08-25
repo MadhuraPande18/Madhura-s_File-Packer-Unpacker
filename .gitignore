@@ -1,0 +1,21 @@
+# Compiled class files
+*.class
+
+# Build output
+/out/
+/bin/
+
+# Packaged archives produced by the app itself
+*.mvp
+
+# Common OS/editor junk
+.DS_Store
+Thumbs.db
+.idea/
+*.iml
+.vscode/
+
+# Java build tool dirs (in case you later add Maven/Gradle)
+target/
+build/
+.gradle/
