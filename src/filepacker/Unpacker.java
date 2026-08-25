@@ -1,3 +1,4 @@
+package filepacker;
 //////////////////////////////////
 // Final File UnPacker Code
 //////////////////////////////////
@@ -6,7 +7,7 @@
 import java.io.*;
 import java.util.*;
 
-class FileUnpacker
+class Unpacker
 {
     public static void main(String A[]) throws Exception
     {
