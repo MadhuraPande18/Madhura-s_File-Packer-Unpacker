@@ -3,6 +3,7 @@ package filepacker;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import javax.swing.JFileChooser;
 
 /**
  * FilePackerFrame
@@ -10,6 +11,10 @@ import java.io.File;
  * AWT-based graphical frontend for the Madhura File Packer - Unpacker.
  * Provides a Pack screen and an Unpack screen (toggled by two buttons),
  * and a scrolling log area that shows live progress from Packer / Unpacker.
+ *
+ * Folder selection uses javax.swing.JFileChooser in directories-only mode,
+ * since plain AWT's FileDialog cannot open a genuine "select a folder" dialog
+ * on most platforms. Everything else stays AWT.
  */
 public class FilePackerFrame extends Frame
 {
@@ -111,20 +116,23 @@ public class FilePackerFrame extends Frame
         gbc.gridx = 1; gbc.gridy = 2;
         panel.add(packButton, gbc);
 
-        Label hint = new Label(
-            "Tip: pick any file inside the folder you want to pack - its parent folder will be used.",
-            Label.CENTER);
-        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 3;
-        panel.add(hint, gbc);
-
         // ---- Actions ----
         browseFolderButton.addActionListener(e ->
         {
-            FileDialog fd = new FileDialog(this, "Pick any file inside the folder to pack", FileDialog.LOAD);
-            fd.setVisible(true);
-            if(fd.getDirectory() != null)
+            JFileChooser chooser = new JFileChooser();
+            chooser.setDialogTitle("Select folder to pack");
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setAcceptAllFileFilterUsed(false);
+
+            if(!folderField.getText().trim().isEmpty())
             {
-                folderField.setText(fd.getDirectory());
+                chooser.setCurrentDirectory(new File(folderField.getText().trim()));
+            }
+
+            int result = chooser.showOpenDialog(this);
+            if(result == JFileChooser.APPROVE_OPTION)
+            {
+                folderField.setText(chooser.getSelectedFile().getAbsolutePath());
             }
         });
 
@@ -179,7 +187,7 @@ public class FilePackerFrame extends Frame
         panel.add(unpackButton, gbc);
 
         Label hint = new Label(
-            "Tip: pick any existing file inside your target folder, or type a new folder name.",
+            "Tip: use the folder dialog's \"Create New Folder\" button to unpack into a fresh folder.",
             Label.CENTER);
         gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 3;
         panel.add(hint, gbc);
@@ -199,11 +207,20 @@ public class FilePackerFrame extends Frame
 
         browseOutDirButton.addActionListener(e ->
         {
-            FileDialog fd = new FileDialog(this, "Pick any file inside the target output folder", FileDialog.LOAD);
-            fd.setVisible(true);
-            if(fd.getDirectory() != null)
+            JFileChooser chooser = new JFileChooser();
+            chooser.setDialogTitle("Select output folder");
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setAcceptAllFileFilterUsed(false);
+
+            if(!outputDirField.getText().trim().isEmpty())
             {
-                outputDirField.setText(fd.getDirectory());
+                chooser.setCurrentDirectory(new File(outputDirField.getText().trim()));
+            }
+
+            int result = chooser.showOpenDialog(this);
+            if(result == JFileChooser.APPROVE_OPTION)
+            {
+                outputDirField.setText(chooser.getSelectedFile().getAbsolutePath());
             }
         });
 
