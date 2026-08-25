@@ -43,7 +43,7 @@ src/filepacker/
 
 3. Run the GUI:
    ```
-   java filepacker.Main
+   java filepacker.main
    ```
    Click **Browse** to pick a folder to pack, name your output archive, and
    click **Pack**. To reverse the process, enter the archive's name and click
